@@ -16,6 +16,9 @@ public class MD5Util {
 /*
     用户端：PASS=MD5(明文+固定Salt)
     服务端：PASS=MD5（用户输入+随机Salt）
+
+    现在我们登录的时候，要去取得数据库里面对应用户的密码和salt值，然后后台接收了前端做了一次MD5的密码formPass,
+    然后将这个formPass去和数据库里面的salt一起再做一次MD5，然后检测是否与数据库里面存的那个密码一致
 */
 
     public static String md5(String src) {
