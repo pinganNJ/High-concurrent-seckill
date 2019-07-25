@@ -139,7 +139,7 @@ public class RedisService {
         try {
             jedis = jedisPool.getResource();
             String realKey = prefix.getPrefix() + key;
-            jedis.decr(realKey);
+            return jedis.decr(realKey);
 
         } finally {
             returnToPool(jedis);
@@ -154,12 +154,12 @@ public class RedisService {
      * @return
      */
 
-    public Long decr(KeyPrefix prefix, String key) {
+    public Long incr(KeyPrefix prefix, String key) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             String realKey = prefix.getPrefix() + key;
-            jedis.incr(realKey);
+            return jedis.incr(realKey);
         } finally {
             returnToPool(jedis);
         }
@@ -214,30 +214,27 @@ public class RedisService {
 
     /**
      * 将Bean对象转换为字符串类型
+     *
      * @param <T>
      */
 
     public static <T> String beanToString(T value) {
-        if(value == null){
+        if (value == null) {
             return null;
         }
 
-        if(value==int.class || value==Integer.class || value==String.class || value == long.class
-        ||value==Long.class){
-            return ""+value;
-        }else {
+        if (value == int.class || value == Integer.class || value == String.class || value == long.class
+                || value == Long.class) {
+            return "" + value;
+        } else {
             return JSON.toJSONString(value);
         }
     }
 
     //关闭jedis
-    public void returnToPool(Jedis jedis){
-        if(jedis != null){
+    public void returnToPool(Jedis jedis) {
+        if (jedis != null) {
             jedis.close();
         }
     }
-
-
-
-
 }
