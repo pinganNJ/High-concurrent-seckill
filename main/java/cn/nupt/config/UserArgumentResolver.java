@@ -4,7 +4,9 @@ import cn.nupt.domain.SeckUser;
 import cn.nupt.service.SeckUserService;
 import com.alibaba.druid.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
@@ -17,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  * @AUTHOR PizAn
  * @CREAET 2019-07-26 21:08
  */
+
+@Configuration
 
 public class UserArgumentResolver {
     @Autowired
