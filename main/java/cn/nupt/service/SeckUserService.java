@@ -2,6 +2,7 @@ package cn.nupt.service;
 
 import cn.nupt.dao.SeckUserDao;
 import cn.nupt.domain.SeckUser;
+import cn.nupt.exception.GlobalException;
 import cn.nupt.redis.RedisService;
 import cn.nupt.redis.SeckUserKey;
 import cn.nupt.result.CodeMsg;
@@ -121,4 +122,31 @@ public class SeckUserService {
         return seckUser;
 
     }
+
+
+    /**
+     * 注意数据修改时候，保持缓存与数据库的一致性
+     * 需要传入token
+     * @param id
+     * @return
+     */
+    public boolean updatePassword(String token,long id,String passNew) {
+        //1.取user对象，查看是否存在
+        SeckUser user=getById(id);
+        if(user==null) {
+            throw new GlobalException(CodeMsg.MOBILE_NOTEXIST);
+        }
+        //2.更新密码
+        SeckUser toupdateuser=new SeckUser();
+        toupdateuser.setId(id);
+        toupdateuser.setPwd(MD5Util.mergrMd5(passNew, user.getSalt()));
+        seckUserDao.update(toupdateuser);
+        //3.更新数据库与缓存，一定保证数据一致性，修改token关联的对象以及id关联的对象
+        redisService.delete(SeckUserKey.getById, ""+id);
+        //不能直接删除token，删除之后就不能登录了
+        user.setPwd(toupdateuser.getPwd());
+        redisService.set(SeckUserKey.token, token,user);
+        return true;
+    }
+
 }

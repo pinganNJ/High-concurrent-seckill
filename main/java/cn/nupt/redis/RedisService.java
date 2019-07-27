@@ -1,5 +1,6 @@
 package cn.nupt.redis;
 
+import cn.nupt.domain.SeckUser;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -237,4 +238,8 @@ public class RedisService {
             jedis.close();
         }
     }
+
+
+
+
 }
